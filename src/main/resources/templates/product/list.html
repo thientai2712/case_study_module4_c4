@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>List User</title>
+    <th:block th:replace="/layout/head :: head"/>
+</head>
+
+<body>
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="lds-pos"></div>
+        <div class="lds-pos"></div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div
+        id="main-wrapper"
+        data-layout="vertical"
+        data-navbarbg="skin5"
+        data-sidebartype="full"
+        data-sidebar-position="absolute"
+        data-header-position="absolute"
+        data-boxed-layout="full"
+>
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <th:block th:replace="/navbar/header :: header"/>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <th:block th:replace="/navbar/left_side_bar :: left_sidebar"/>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!--        <div class="page-breadcrumb">-->
+        <!--            <div class="row">-->
+        <!--                <div class="col-12 d-flex no-block align-items-center">-->
+        <!--                    <h4 class="page-title">Dashboard</h4>-->
+        <!--                    <div class="ms-auto text-end">-->
+        <!--                        <nav aria-label="breadcrumb">-->
+        <!--                            <ol class="breadcrumb">-->
+        <!--                                <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+        <!--                                <li class="breadcrumb-item active" aria-current="page">-->
+        <!--                                    Library-->
+        <!--                                </li>-->
+        <!--                            </ol>-->
+        <!--                        </nav>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18 btn btn-outline-primary" id="btnShowCreate">Create Product</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Create Product</a></li>
+                                <li class="breadcrumb-item active">create product</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10 d-none d-sm-block" style="margin-bottom: 20px">
+                    <form class="form-inline">
+                        <input class="form-control col-3 mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchProduct" name="keyword">
+                        <button class="btn btn-primary" id="btnSearch" type="button"> <i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+            <!--            <div class="row">-->
+            <!--                <div class="col-12">-->
+            <!--                    <div class="page-title-right">-->
+            <!--                        <input type="text" id="search">-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+            <!--                    <input type="hidden" id="currentRow"/>-->
+            <div>
+                <table id="tbListProducts" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<div class="footer" style="text-align: right"></div>
+
+<th:block th:replace="/layout/footer_product :: footer_product"/>
+
+<th:block th:replace="/layout/script :: script"/>
+
+<th:block th:replace="/product/modal_create :: modal_create"/>
+
+<th:block th:replace="/product/modal_update :: modal_update"/>
+
+<th:block th:replace="/product/temp_row_product :: temp_row_product"/>
+
+<script>
+
+    let product = new Product();
+
+    let category = new Category();
+
+    let productId = null;
+
+    let tempRowProduct = $.validator.format($.trim($('#tempRowProduct').val().toString()));
+
+    function addRowProduct() {
+        $('#tbListProducts tbody').prepend($(tempRowProduct(product.id, product.id, product.title, product.urlImage, product.price, category.title, product.description)));
+    }
+    function replaceRowProduct() {
+        $('#tr_' + product.id).replaceWith($(tempRowProduct(product.id,product.id, product.title,product.urlImage, product.price,product.category.title)));
+    }
+
+    function handleShowFooter() {
+        $("#tbListProducts tbody tr").on('click', function () {
+            productId = $(this).attr('id').replace('tr_', '');
+
+            let tempFooter_product = $.validator.format($.trim($('#tempFooter_product').val().toString()));
+
+            $('.footer').html(tempFooter_product);
+            handleShowConfirmDelete();
+            handleShowUpdate();
+        });
+    }
+
+    function handleShowConfirmDelete() {
+        $('button.deleted').on('click', function () {
+            App.SweetAlert.showConfirmDeleteProduct()
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            "headers": {
+                                "accept": "application/json",
+                                "content-type": "application/json"
+                            },
+                            "type": "POST",
+                            "url": "http://localhost:8080/api/products/delete/" + productId,
+                            "data": JSON.stringify(product)
+                        })
+                            .done((data) => {
+                                $('#tr_' + productId).remove();
+                                console.log(data)
+                                App.SweetAlert.showSuccessAlert("Delete success !!")
+
+                            })
+                            .fail((error) => {
+                                console.log(error)
+                                App.SweetAlert.showErrorAlert('Delete fail !!');
+                            });
+                    }
+                })
+        })
+    }
+
+    function handleShowUpdate(){
+    $('#btnShowUpdate').on('click', () => {
+            $.ajax({
+                "headers": {
+                    "accept": "application/json",
+                    "content-type": "application/json"
+                },
+                "type": "GET",
+                "url": "http://localhost:8080/api/products/" + productId
+            })
+            .done((data) => {
+                product = data;
+                console.log(product);
+
+                category = product.category
+
+                console.log(product.category);
+                console.log(product.category.id);
+ 1
+                $("#titleUp").val(product.title)
+                $("#imageSa").val(product.urlImage)
+                $("#priceUp").val(product.price)
+                $("#descriptionUp").val(product.description)
+                $("#categoryUp").val(product.category.id)
+
+                $("#modalUpdateProduct").modal("show")
+            })
+            .fail((jqXHR) => {
+                console.log(jqXHR);
+                if (jqXHR.status === 401) {
+                    App.SweetAlert.showErrorAlert("Please Login!");
+                }
+                else {
+                    if (jqXHR.status === 403) {
+                        App.SweetAlert.showErrorAlert("You are not authorized to perform this function!");
+                    }
+                    else {
+                        App.SweetAlert.showErrorAlert(jqXHR.responseJSON.message);
+                    }
+                }
+            })
+        })
+    }
+
+    $("#btnShowCreate").on("click", () => {
+        $("#modalCreateProduct").modal("show");
+    })
+
+    $("#btnCreateProduct").on("click", function () {
+
+        category.id = $("#category").val();
+
+        product.title = $("#title").val();
+        product.urlImage = $("#imageUp").val();
+        product.price = $("#price").val();
+        product.description = $("#description").val();
+        product.category = category
+
+        $.ajax({
+            "headers": {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            "type": "POST",
+            "url": "http://localhost:8080/api/products/create",
+            "data": JSON.stringify(product)
+        })
+            .done((data) => {
+                console.log(data);
+                product = data;
+                category = product.category;
+                product.price = App.formatNumberSpace(product.price);
+
+                addRowProduct();
+
+                $('#modalCreateProduct').modal('hide');
+
+                App.SweetAlert.showSuccessAlert('Create Product success!');
+
+                unbindAll();
+
+                handleShowFooter();
+
+            })
+            .fail((jqXHR) => {
+                console.log(jqXHR);
+                $('.modal-alert-danger').html('').removeClass('hide').addClass('show');
+
+                if (jqXHR.responseJSON.message) {
+                    let msg = jqXHR.responseJSON.message;
+
+                    let str = `<label id="message-error" class="error" for="message">${msg}</label>`;
+
+                    $('#modalCreateProduct .modal-alert-danger').append(str);
+                }
+                else if (jqXHR.responseJSON) {
+                    $.each(jqXHR.responseJSON, (key, item) => {
+                        let str = `<label id="${key}-error" class="error" for="${key}">${item}</label>`;
+                        $("#" + key).addClass("error");
+
+                        $('#modalCreateProduct .modal-alert-danger').append(str);
+                    })
+                }
+            })
+    })
+
+    $("#btnUpdateProduct").on('click', function (){
+
+        category = product.category;
+
+        product.title = $('#titleUp').val();
+        product.price = $('#priceUp').val();
+        product.urlImage = $('#imageSa').val();
+        product.description = $('#descriptionUp').val();
+        product.category = $('#categoryUp').val();
+        $.ajax({
+            "headers": {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            "type": "PUT",
+            "url": "http://localhost:8080/api/products/update",
+            "data": JSON.stringify(product)
+        })
+            .done((data) => {
+                console.log(data)
+                product = data;
+
+                category = product.category;
+
+                replaceRowProduct();
+
+                $('#modalUpdateProduct').modal('hide');
+
+                App.SweetAlert.showSuccessAlert("Update product success");
+
+                unbindAll();
+
+                handleShowFooter();
+
+            })
+            .fail((jqXHR) => {
+                $('#modalUpdateProduct .modal-alert-danger').html('').removeClass('hide').addClass('show');
+
+                if (jqXHR.status === 401) {
+                    let msg = "Please login !!";
+
+                    let str = `<label id="message-error" class="error" for="message">${msg}</label>`;
+
+                    $('#modalUpdateProduct .modal-alert-danger').append(str);
+                } else {
+                    if (jqXHR.status === 403) {
+                        let msg = "Access denid!";
+
+                        let str = `<label id="message-error" class="error" for="message">${msg}</label>`;
+
+                        $('#modalUpdateProduct .modal-alert-danger').append(str);
+                    } else {
+                        if (jqXHR.responseJSON.message) {
+                            let msg = jqXHR.responseJSON.message;
+
+                            let str = `<label id="message-error" class="error" for="message">${msg}</label>`;
+
+                            $('#modalUpdateProduct .modal-alert-danger').append(str);
+                        } else if (jqXHR.responseJSON) {
+                            $.each(jqXHR.responseJSON, (key, item) => {
+                                let str = `<label id="${key}-error" class="error" for="${key}">${item}</label>`;
+                                $("#" + key).addClass("error");
+
+                                $('#modalUpdateProduct .modal-alert-danger').append(str);
+                            })
+                        }
+                    }
+                }
+            })
+
+    })
+
+    function getAllProduct() {
+        return $.ajax({
+            "headers": {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            "type": "GET",
+            "url": "http://localhost:8080/api/products"
+        })
+            .done((data) => {
+                $("#tbListProducts tbody").html("");
+
+                $.each(data, (i, item) => {
+                    product = item;
+                    product.price = App.formatNumberSpace(product.price);
+                    category = product.category
+                    addRowProduct();
+                })
+
+                handleShowFooter();
+                handleShowConfirmDelete();
+
+
+            })
+            .fail((jqXHR) => {
+                console.log(jqXHR);
+
+            })
+    }
+
+    $('#btnSearch').on('click', function (){
+        let keyword = $('#searchProduct').val();
+        searchByName(keyword);
+    })
+
+
+    function searchByName(keySearch){
+        return $.ajax({
+            "headers": {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            "type": "GET",
+            "url": "http://localhost:8080/api/products/search/" + keySearch
+        })
+            .done((data) =>{
+                $("#tbListProducts tbody").html("");
+
+
+                console.log(data);
+                $.each(data, (i,item)=>{
+                    product = item;
+                    product.price = App.formatNumberSpace(product.price);
+                    category = product.category;
+                    addRowProduct();
+                })
+                handleShowFooter();
+
+            })
+            .fail((jqXHR) => {
+                console.log(jqXHR);
+            })
+    }
+
+    getAllProduct();
+</script>
+</body>
+</html>
