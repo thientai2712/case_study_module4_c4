@@ -127,11 +127,11 @@ public class CartItemRestController {
         long newQuantity = currentQuantity - 1;
 
 
-        BigDecimal newAmuont = newPrice.multiply(new BigDecimal(newQuantity));
+        BigDecimal newAmount = newPrice.multiply(new BigDecimal(newQuantity));
 
         cartItem.setProductPrice(newPrice);
         cartItem.setQuantity(newQuantity);
-        cartItem.setAmount(newAmuont);
+        cartItem.setAmount(newAmount);
 
         CartItem newCartItem = cartItemService.save(cartItem);
 

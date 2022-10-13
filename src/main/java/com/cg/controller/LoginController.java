@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/homes")
-public class PageController {
+@RequestMapping("/")
+public class LoginController {
 
-    @GetMapping
-    public ModelAndView showPage(){
+    @GetMapping("/login")
+    public ModelAndView showListUser(){
+
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/product/home");
-
+        modelAndView.setViewName("/login");
 
         return modelAndView;
     }

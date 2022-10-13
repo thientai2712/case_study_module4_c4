@@ -349,7 +349,7 @@
 
                 })
                 .fail((jqXHR) =>{
-                    $('.modal-alert-danger').html('').removeClass('hide').addClass('show');
+                    $('.modal-alert-danger').removeClass('hide').addClass('show');
 
                     console.log(jqXHR)
                     // App.SweetAlert.showErrorAlert("Create user faill..!");
@@ -442,6 +442,8 @@
             })
             .fail((jqXHR) => {
                 console.log(jqXHR);
+                $('.modal-alert-danger').removeClass('hide').addClass('show');
+
                 if (jqXHR.responseJSON.message) {
                     let msg = jqXHR.responseJSON.message;
 
@@ -644,6 +646,29 @@
      })
 
 
+     // $("#modalCreateUser").on("hidden.bs.modal", () => {
+     //     $("#modalCreateUser .modal-alert-danger").empty().removeClass("show").addClass("hide");
+     // })
+     //
+     // $("#modalUpdateUser").on("hidden.bs.modal", () => {
+     //     $("#modalUpdateUser .modal-alert-danger").empty().removeClass("show").addClass("hide");
+     // })
+
+     $(".btn-close").on('click', ()=>{
+
+         $('#frmCreateUser')[0].reset();
+
+
+
+         $("#modalCreateUser").on("hidden.bs.modal", () => {
+             $("#modalCreateUser .modal-alert-danger").empty().removeClass("show").addClass("hide");
+         })
+
+         $("#modalUpdateUser").on("hidden.bs.modal", () => {
+             $("#modalUpdateUser .modal-alert-danger").empty().removeClass("show").addClass("hide");
+         })
+     })
+
      function getAllUser(){
 
          $.ajax({
@@ -665,6 +690,40 @@
 
                  handleConfirmDelete();
                  handleShowFooter();
+             })
+     }
+
+     $('#btnSearch').on('click', function (){
+         let keyword = $('#searchProduct').val();
+         searchByName(keyword);
+     })
+
+     function searchByName(keySearch){
+         return $.ajax({
+             "headers": {
+                 "accept": "application/json",
+                 "content-type": "application/json"
+             },
+             "type": "GET",
+             "url": "http://localhost:8080/api/users/search/" + keySearch
+         })
+             .done((data) =>{
+                 $("#tbListUsers tbody").html("");
+
+
+                 console.log(data);
+                 $.each(data, (i,item)=>{
+                     user = item;
+                     locationRegion = user.locationRegion;
+
+                     addRowUser();
+                 })
+                 handleShowFooter();
+                 handleConfirmDelete();
+
+             })
+             .fail((jqXHR) => {
+                 console.log(jqXHR);
              })
      }
      getAllUser();

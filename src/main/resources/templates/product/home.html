@@ -16,7 +16,7 @@
     <!-- bootstrap  -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <!-- style  -->
-    <link rel="stylesheet" href="/assets/css/styles.css">
+
     <!-- Responsive-->
     <link rel="stylesheet" href="/assets/responsive.css">
     <!-- fevicon -->
@@ -31,6 +31,7 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/sweetalert2.min.css">
     <link rel="stylesheet" href="/assets/css/iziToast-1.4.0.min.css">
 </head>
@@ -56,20 +57,20 @@
             <ul class="list-unstyled components">
 
                 <li class="active">
-                    <a href="index.html">Home</a>
+                    <a href="/homes">Home</a>
                 </li>
                 <li>
-                    <a href="#brand">Brands</a>
+                    <a href="/products">Product</a>
                 </li>
                 <li>
-                    <a href="#shoes">Shoes</a>
+                    <a href="/users">Users</a>
                 </li>
-                <li>
-                    <a href="#jewellery">Jewellery</a>
-                </li>
-                <li>
-                    <a href="#kids">Kids and Babies</a>
-                </li>
+<!--                <li>-->
+<!--                    <a href="#jewellery">Jewellery</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="#kids">Kids and Babies</a>-->
+<!--                </li>-->
             </ul>
 
         </nav>
@@ -99,14 +100,14 @@
                                     <ul>
                                         <li class="menu_iconb">
                                             <a href="#"><img style="margin-right: 15px;" src="/assets/icon/1.png"
-                                                             alt="#"/>7213456789</a>
+                                                             alt="#"/>0123456789</a>
                                         </li>
                                         <li class="menu_iconb">
                                             <a href="#">Log in <img style="margin-right: 15px;" src="/assets/icon/5.png"
                                                                     alt="#"/> </a>
                                         </li>
                                         <li class="menu_iconb">
-                                            <a href="#">Signup<img style="margin-left: 15px;" src="/assets/icon/6.png"
+                                            <a href="/logout">Logout<img style="margin-left: 15px;" src="/assets/icon/6.png"
                                                                    alt="#"/></a>
                                         </li>
                                         <li class="tytyu">
@@ -580,9 +581,10 @@
 
 <!-- Javascript files-->
 <script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/jquery-3.6.0.min.js"></script>
+
 
 <!-- sidebar -->
 
@@ -663,6 +665,8 @@
                 handleAddQuantity();
 
                 handleMinusQuantity();
+
+                handleShowDelete();
             })
     }
 
@@ -690,6 +694,8 @@
                 handleAddQuantity();
 
                 handleMinusQuantity();
+
+                handleShowDelete();
             })
             .fail((jqXHR) => {
                 console.log((jqXHR));
@@ -717,6 +723,8 @@
                 handleAddQuantity();
 
                 handleMinusQuantity();
+
+                handleShowDelete();
             })
             .fail((jqXHR) => {
                 console.log((jqXHR));
@@ -742,6 +750,32 @@
                 console.log((jqXHR));
             })
     }
+
+    function handleShowDelete(){
+        let btnDelete = $("#btnDelete");
+
+        // btnDelete.off();
+
+        btnDelete.on('click', function (){
+
+            let cartItemId = $(this).data('id');
+
+
+            Swal.fire({
+                text: "You definitely want to remove this product from your cart?",
+                icon: 'information',
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, Please!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    removeCartItem(cartItemId);
+                }
+            })
+        });
+    }
+
 
     function handleAddQuantity() {
         let btnAddQuantity = $('#panelCart .cart-items .card-body button.add')
@@ -829,7 +863,7 @@
                     "data": JSON.stringify(cartItem)
                 })
                 .done((resp) => {
-                    if (resp.response.status === 201) {
+                    if (resp === 200) {
                         iziToast.success({
                             title: 'OK',
                             position: 'bottomLeft',
@@ -837,6 +871,7 @@
                             message: 'Add to cart success!'
                         });
                     }
+                    handleShowDelete();
                 })
                 .fail((jqXHR) => {
                     console.log(jqXHR);

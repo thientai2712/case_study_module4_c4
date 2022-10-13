@@ -1,4 +1,4 @@
-class AppPage {
+    class AppPage {
     static renderProductItem(obj) {
         return `
                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 margintop">
@@ -7,7 +7,7 @@ class AppPage {
                                 <i><img src="/assets/icon/${obj.urlImage}"/>
                                 </i>
                                 <h3 class="card-title">${obj.title}</h3>
-                                <h4>Price $<span class="nolmal">${obj.price}</span></h4>
+                                <h4>Price <span class="nolmal">${obj.price}</span>$</h4>
 
                             </div>
                             <a class="buynow add-cart" id="addToCart" data-id="${obj.id}">Add to cart</a>
@@ -25,7 +25,7 @@ class AppPage {
                         <div class="card-body">
                             <h5 class="card-title">${obj.productName}</h5>
                             <p class="card-text">
-                                <span class="price">${obj.productPrice}</span>
+                                <span class="price">${obj.productPrice} $</span>
                                 <span>
                                     <button class="btn btn-danger minus" data-id="${obj.id}">-</button>
                                 </span>
@@ -35,9 +35,12 @@ class AppPage {
                                 <span>
                                     <button class="btn btn-success add" data-id="${obj.id}">+</button>
                                 </span>
-                                <span class="amount">${obj.amount}</span>
+                                <span class="amount">${obj.amount} $</span>
                             </p>
                         </div>
+                    </div >
+                    <div class="col-md-4">
+                        <button id="btnDelete" data-id="${obj.id}" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>

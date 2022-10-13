@@ -68,4 +68,9 @@ public class CartItemServiceImpl implements CartItemService{
     public BigDecimal getSumAmount(long cartId) {
         return cartItemRepository.getSumAmount(cartId);
     }
+
+    @Override
+    public Optional<CartItem> findByCartAndProduct(Cart cart, Product product) {
+        return cartItemRepository.findByCartAndProduct(cart,product);
+    }
 }

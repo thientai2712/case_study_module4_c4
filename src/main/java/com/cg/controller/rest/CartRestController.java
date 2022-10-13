@@ -81,10 +81,12 @@ public class CartRestController {
 
             cartItemService.save(cartItem);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(200,HttpStatus.CREATED);
         }
 
-        Optional<CartItem> cartItemOptional = cartItemService.findByProduct(product);
+
+
+        Optional<CartItem> cartItemOptional = cartItemService.findByCartAndProduct(cartOptional.get(),product);
 
         if(!cartItemOptional.isPresent()){
 
@@ -106,7 +108,7 @@ public class CartRestController {
 
             cartService.save(cart);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(200, HttpStatus.CREATED);
         }
 
         CartItem cartItem = cartItemOptional.get();
@@ -138,7 +140,7 @@ public class CartRestController {
 
         cartService.save(cart);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(200, HttpStatus.CREATED);
     }
 
     @PostMapping("/checkout")
@@ -149,7 +151,7 @@ public class CartRestController {
         Optional<User> userOptional = userService.findUserByEmail(username);
 
         if (!userOptional.isPresent()) {
-            throw new DataInputException("Mã khách hàng không hợp lệ (MS001)");
+            throw new DataInputException("UserID is not valid!");
         }
 
         User user = userOptional.get();
@@ -161,10 +163,10 @@ public class CartRestController {
                 return new ResponseEntity<>(HttpStatus.OK);
             }
 
-            throw new DataInputException("Liên hệ với quản trị hệ thống (MS001)");
+            throw new DataInputException("Please contact manager!!(001)");
 
         } catch (Exception e) {
-            throw new DataInputException("Liên hệ với quản trị hệ thống (MS002)");
+            throw new DataInputException("Please contact manager!!(002)");
         }
 
     }

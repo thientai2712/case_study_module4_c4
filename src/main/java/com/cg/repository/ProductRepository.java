@@ -30,8 +30,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.price," +
             "p.description, " +
             "p.category) " +
-            "FROM Product p " +
-            "WHERE p.title LIKE %?1% " +
-            "OR p.category.title LIKE %?1%")
+            "FROM Product AS p " +
+            "WHERE p.deleted = false " +
+            "AND (p.title LIKE %?1%" +
+            "OR p.category.title LIKE %?1%) ")
     List<ProductDTO> searchProductDTOByTileAndCategory(String keySearch);
 }

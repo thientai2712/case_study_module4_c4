@@ -86,12 +86,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-10 d-none d-sm-block" style="margin-bottom: 20px">
-                    <form class="form-inline">
-                        <input class="form-control col-3 mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchProduct" name="keyword">
-                        <button class="btn btn-primary" id="btnSearch" type="button"> <i class="fas fa-search"></i></button>
-                    </form>
-                </div>
             </div>
             <div class="row">
 
@@ -173,7 +167,7 @@
         $('#tbListProducts tbody').prepend($(tempRowProduct(product.id, product.id, product.title, product.urlImage, product.price, category.title, product.description)));
     }
     function replaceRowProduct() {
-        $('#tr_' + product.id).replaceWith($(tempRowProduct(product.id,product.id, product.title,product.urlImage, product.price,product.category.title)));
+        $('#tr_' + product.id).replaceWith($(tempRowProduct(product.id,product.id, product.title,product.urlImage, product.price,product.category.title,product.description)));
     }
 
     function handleShowFooter() {
@@ -331,7 +325,7 @@
         product.price = $('#priceUp').val();
         product.urlImage = $('#imageSa').val();
         product.description = $('#descriptionUp').val();
-        product.category = $('#categoryUp').val();
+        product.category.id = $('#categoryUp').val();
         $.ajax({
             "headers": {
                 "accept": "application/json",
@@ -369,7 +363,7 @@
                     $('#modalUpdateProduct .modal-alert-danger').append(str);
                 } else {
                     if (jqXHR.status === 403) {
-                        let msg = "Access denid!";
+                        let msg = "Access dennid!";
 
                         let str = `<label id="message-error" class="error" for="message">${msg}</label>`;
 
@@ -421,13 +415,27 @@
             })
             .fail((jqXHR) => {
                 console.log(jqXHR);
-
             })
     }
 
     $('#btnSearch').on('click', function (){
         let keyword = $('#searchProduct').val();
         searchByName(keyword);
+    })
+
+    $(".btn-close").on('click', ()=>{
+
+        $('#frmCreateProduct')[0].reset();
+
+
+
+        $("#modalCreateProduct").on("hidden.bs.modal", () => {
+            $("#modalCreateProduct .modal-alert-danger").empty().removeClass("show").addClass("hide");
+        })
+
+        $("#modalUpdateProduct").on("hidden.bs.modal", () => {
+            $("#modalUpdateProduct   .modal-alert-danger").empty().removeClass("show").addClass("hide");
+        })
     })
 
 

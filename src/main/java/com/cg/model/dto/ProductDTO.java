@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 @Accessors(chain = true)
 public class ProductDTO implements Validator {
 
+    @Column(nullable = false)
     private Long id;
 
     @NotBlank(message = "Product Name is not required")

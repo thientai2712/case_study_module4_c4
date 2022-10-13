@@ -97,7 +97,6 @@ public class ProductRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     @PutMapping("/update")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> doUpdate(@Validated @RequestBody ProductDTO productDTO, BindingResult bindingResult) {
 
         new ProductDTO().validate(productDTO, bindingResult);

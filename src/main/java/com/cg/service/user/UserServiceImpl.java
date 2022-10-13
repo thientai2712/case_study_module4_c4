@@ -4,6 +4,7 @@ import com.cg.exception.EmailExistsException;
 import com.cg.model.LocationRegion;
 import com.cg.model.User;
 import com.cg.model.UserPrinciple;
+import com.cg.model.dto.ProductDTO;
 import com.cg.model.dto.UserDTO;
 import com.cg.repository.LocationRegionRepository;
 import com.cg.repository.UserRepository;
@@ -124,6 +125,12 @@ public class UserServiceImpl implements UserService{
     public Optional<UserDTO> findUserDTOByPhoneAndIdIsNot(String phone, Long id) {
         return userRepository.findUserDTOByPhoneAndIdIsNot(phone,id);
     }
+
+    @Override
+    public List<UserDTO> searchUserDTOByPhoneAndFullName(String keySearch) {
+        return userRepository.searchUserDTOByPhoneAndFullName(keySearch);
+    }
+
 
 
 }

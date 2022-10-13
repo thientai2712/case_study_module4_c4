@@ -21,4 +21,6 @@ public interface CartItemService extends IGeneralService<CartItem> {
     long countCartItemByCart(Cart cart);
 
     BigDecimal getSumAmount(@Param("cartId") long cartId);
+
+    Optional<CartItem> findByCartAndProduct(Cart cart, Product product);
 }

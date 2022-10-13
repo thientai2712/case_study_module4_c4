@@ -2,6 +2,7 @@ package com.cg.service.user;
 
 import com.cg.exception.EmailExistsException;
 import com.cg.model.User;
+import com.cg.model.dto.ProductDTO;
 import com.cg.model.dto.UserDTO;
 import com.cg.service.IGeneralService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,4 +33,6 @@ public interface UserService extends IGeneralService<User>, UserDetailsService {
     Optional<UserDTO> findUserDTOByEmailAndIdIsNot(String email, Long id);
 
     Optional<UserDTO> findUserDTOByPhoneAndIdIsNot(String phone, Long id);
+
+    List<UserDTO> searchUserDTOByPhoneAndFullName(String keySearch);
 }

@@ -5,6 +5,7 @@ import com.cg.exception.EmailExistsException;
 import com.cg.exception.ResourceNotFoundException;
 import com.cg.model.Role;
 import com.cg.model.User;
+import com.cg.model.dto.ProductDTO;
 import com.cg.model.dto.UserDTO;
 import com.cg.service.role.RoleService;
 import com.cg.service.user.UserService;
@@ -159,5 +160,11 @@ public class UserRestController {
         User updateUser = userService.save(optionalUser.get());
 
         return new ResponseEntity<>(updateUser.toUserDTO(),HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/search/{keySearch}")
+    public ResponseEntity<?> doSearch(@PathVariable String keySearch) {
+        List<UserDTO> userDTOList = userService.searchUserDTOByPhoneAndFullName(keySearch);
+
+        return new ResponseEntity<>(userDTOList, HttpStatus.OK);
     }
 }

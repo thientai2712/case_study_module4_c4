@@ -1,6 +1,7 @@
 package com.cg.repository;
 
 import com.cg.model.User;
+import com.cg.model.dto.ProductDTO;
 import com.cg.model.dto.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -68,5 +69,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
             ") " +
             "FROM User u WHERE u.phone = ?1 AND u.id <> ?2 ")
     Optional<UserDTO> findUserDTOByPhoneAndIdIsNot(String phone, Long id);
+
+    @Query("SELECT NEW com.cg.model.dto.UserDTO (" +
+            "u.id, " +
+            "u.urlImage, " +
+            "u.fullName, " +
+            "u.email, " +
+            "u.password, " +
+            "u.phone, " +
+            "u.role, " +
+            "u.locationRegion" +
+            ") " +
+            "FROM User AS u " +
+            "WHERE u.deleted = false " +
+            "AND (u.phone LIKE %?1%" +
+            "OR u.fullName LIKE %?1%) ")
+    List<UserDTO> searchUserDTOByPhoneAndFullName(String keySearch);
 
 }
